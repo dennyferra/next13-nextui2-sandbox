@@ -48,7 +48,7 @@ const ColorPicker = forwardRef((props, ref) => {
     ref,
     // this is just for the example, the props bellow should be passed by the parent component
     label: "Search",
-    type: "search",
+    type: "text",
     placeholder: "Type to search...",
     startContent: (
       <div className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
@@ -72,17 +72,21 @@ const ColorPicker = forwardRef((props, ref) => {
   }, [isClearable, getClearButtonProps]);
 
   const innerWrapper = React.useMemo(() => {
+    const inputProps = getInputProps();
+    console.log(inputProps);
+
     if (startContent || end) {
       return (
         <div {...getInnerWrapperProps()}>
           {startContent}
-          <input {...getInputProps()} />
+          {/* Focusable elements: https://allyjs.io/data-tables/focusable.html */}
+          <a href="#" {...inputProps} />
           {end}
         </div>
       );
     }
 
-    return <input {...getInputProps()} />;
+    return <input {...inputProps} />;
   }, [startContent, end, getInputProps, getInnerWrapperProps]);
 
   return (

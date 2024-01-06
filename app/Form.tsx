@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Input } from "@nextui-org/react";
-import { ColorPicker } from "./ColorPicker";
+import ColorPicker from "./ColorPicker";
 
 export function Form() {
   return (
