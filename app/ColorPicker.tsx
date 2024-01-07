@@ -19,7 +19,7 @@ const styles = {
     "focus-within:!bg-default-200/50",
     "dark:hover:bg-default/70",
     "dark:focus-within:!bg-default/60",
-    "!cursor-text",
+    "!cursor-pointer",
   ],
 };
 
@@ -47,9 +47,8 @@ const ColorPicker = forwardRef((props, ref) => {
     ...props,
     ref,
     // this is just for the example, the props bellow should be passed by the parent component
-    label: "Search",
+    label: "Color",
     type: "text",
-    placeholder: "Type to search...",
     startContent: (
       <div className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
     ),
@@ -62,11 +61,7 @@ const ColorPicker = forwardRef((props, ref) => {
   const labelContent = <label {...getLabelProps()}>{label}</label>;
 
   const end = React.useMemo(() => {
-    if (isClearable) {
-      return (
-        <span {...getClearButtonProps()}>{endContent || <span>O</span>}</span>
-      );
-    }
+    return <div className="w-12 h-full bg-red-500 rounded-md">&nbsp;</div>;
 
     return endContent;
   }, [isClearable, getClearButtonProps]);

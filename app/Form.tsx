@@ -16,7 +16,7 @@ export function Form() {
 
       <Input type="text" label="O Hai Mark" className="max-w-full" />
 
-      <ColorPicker />
+      <ColorPicker name="color" isClearable />
 
       <Button color="primary">Submit</Button>
     </div>
