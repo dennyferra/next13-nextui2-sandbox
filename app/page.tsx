@@ -1,9 +1,41 @@
-import styles from "./page.module.css";
-import { Card, CardBody, CardHeader, CardFooter } from "@nextui-org/card";
+import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
+import { PrismaClient } from "@prisma/client";
+import { withBark } from "prisma-extension-bark";
 import { Form } from "./Form";
+import { TableTree } from "./TableTree";
 import Visualizer from "./graph";
+import styles from "./page.module.css";
 
-export default function Home() {
+const xprisma = new PrismaClient().$extends(
+  withBark({ modelNames: ["activity"] })
+);
+
+export default async function Home() {
+  const activities = await xprisma.activity.findMany({
+    where: { depth: 1 },
+  });
+
+  if (activities.length === 0) {
+    const root = await xprisma.activity.createRoot({
+      data: { name: "My root A" },
+    });
+    const a1 = await xprisma.activity.createChild({
+      node: root,
+      data: { name: "A 1" },
+    });
+    await xprisma.activity.createSibling({
+      node: a1,
+      data: { name: "A 2" },
+    });
+    const root2 = await xprisma.activity.createRoot({
+      data: { name: "My root B" },
+    });
+    await xprisma.activity.createChild({
+      node: root2,
+      data: { name: "B 1" },
+    });
+  }
+
   const mockGraph = {
     nodes: [
       { id: "1", label: "node1", type: "entity", title: "Hello W0rd!" },
@@ -34,6 +66,12 @@ export default function Home() {
         </CardHeader>
         <CardBody className="bg-neutral-900">
           <Form />
+
+          <div>
+            <h1>Activities</h1>
+            <TableTree activities={activities} />
+          </div>
+
           <div className="w-full flex justify-center h-[450px]">
             <Visualizer graph={mockGraph} />
           </div>
