@@ -5,36 +5,38 @@ import { Form } from "./Form";
 import { TableTree } from "./TableTree";
 import Visualizer from "./graph";
 import styles from "./page.module.css";
+import { Arbor } from "./arbor/Arbor";
 
-const xprisma = new PrismaClient().$extends(
-  withBark({ modelNames: ["activity"] })
-);
+// const xprisma = new PrismaClient().$extends(
+//   withBark({ modelNames: ["activity"] })
+// );
 
 export default async function Home() {
-  const activities = await xprisma.activity.findMany({
-    where: { depth: 1 },
-  });
+  // Get root level activities
+  // const activities = await xprisma.activity.findMany({
+  //   where: { depth: 1 },
+  // });
 
-  if (activities.length === 0) {
-    const root = await xprisma.activity.createRoot({
-      data: { name: "My root A" },
-    });
-    const a1 = await xprisma.activity.createChild({
-      node: root,
-      data: { name: "A 1" },
-    });
-    await xprisma.activity.createSibling({
-      node: a1,
-      data: { name: "A 2" },
-    });
-    const root2 = await xprisma.activity.createRoot({
-      data: { name: "My root B" },
-    });
-    await xprisma.activity.createChild({
-      node: root2,
-      data: { name: "B 1" },
-    });
-  }
+  // if (activities.length === 0) {
+  //   const root = await xprisma.activity.createRoot({
+  //     data: { name: "My root A" },
+  //   });
+  //   const a1 = await xprisma.activity.createChild({
+  //     node: root,
+  //     data: { name: "A 1" },
+  //   });
+  //   await xprisma.activity.createSibling({
+  //     node: a1,
+  //     data: { name: "A 2" },
+  //   });
+  //   const root2 = await xprisma.activity.createRoot({
+  //     data: { name: "My root B" },
+  //   });
+  //   await xprisma.activity.createChild({
+  //     node: root2,
+  //     data: { name: "B 1" },
+  //   });
+  // }
 
   const mockGraph = {
     nodes: [
@@ -65,11 +67,13 @@ export default async function Home() {
           To be or not to be?
         </CardHeader>
         <CardBody className="bg-neutral-900">
+          <Arbor />
+
           <Form />
 
           <div>
             <h1>Activities</h1>
-            <TableTree activities={activities} />
+            {/* <TableTree activities={activities} /> */}
           </div>
 
           <div className="w-full flex justify-center h-[450px]">
